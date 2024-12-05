@@ -44,9 +44,12 @@ RUN wget https://github.com/Open-Cascade-SAS/OCCT/archive/refs/tags/V7_8_1.tar.g
     cd /work_dir && \
     rm -rf OCCT-7_8_1 V7_8_1.tar.gz
 
+RUN PYTHONOCC_INSTALL_DIRECTORY=$(which python)
+RUN NUMPY_INCLUDE_DIR=$(python -c "import numpy; print(numpy.get_include())")  && \
+    export CPLUS_INCLUDE_PATH=$NUMPY_INCLUDE_DIR && \
+    export C_INLUDE_PATH=$NUMPY_INCLUDE_DIR
 
 RUN pip install numpy
-
 RUN git clone https://github.com/tpaviot/pythonocc-core.git && \
     cd pythonocc-core && \
     mkdir cmake-build && \
